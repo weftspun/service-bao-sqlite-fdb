@@ -1,0 +1,70 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      # Same FoundationDB client version service-openbao's Dockerfile.fdb
+      # installs. Bumping it here means bumping it there too.
+      FDB_VERSION: 7.3.79
+    steps:
+      - name: Checkout plugin
+        uses: actions/checkout@v4
+        with:
+          path: plugin
+
+      - name: Checkout datasource-store
+        uses: actions/checkout@v4
+        with:
+          repository: weftspun/datasource-store
+          path: store
+
+      - name: Populate thirdparty/store
+        run: |
+          mkdir -p plugin/thirdparty/store
+          ln -sfn "$PWD/store/fdb_vfs.c" plugin/thirdparty/store/fdb_vfs.c
+          ln -sfn "$PWD/store/fdb_keys.h" plugin/thirdparty/store/fdb_keys.h
+          ls -la plugin/thirdparty/store/
+
+      - name: Install libsqlite3 and pkg-config
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsqlite3-dev pkg-config
+
+      - name: Install FoundationDB clients
+        run: |
+          curl -fSL "https://github.com/apple/foundationdb/releases/download/${FDB_VERSION}/foundationdb-clients_${FDB_VERSION}-1_amd64.deb" \
+            -o /tmp/fdb-clients.deb
+          sudo dpkg -i /tmp/fdb-clients.deb || sudo apt-get install -f -y
+          test -f /usr/include/foundationdb/fdb_c.h
+          test -f /usr/lib/libfdb_c.so || test -f /usr/lib/x86_64-linux-gnu/libfdb_c.so
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+
+      - name: Tidy
+        working-directory: plugin
+        run: go mod tidy
+
+      - name: Vet
+        working-directory: plugin
+        run: make vet
+
+      - name: Test
+        working-directory: plugin
+        run: make test
+
+      - name: Build
+        working-directory: plugin
+        run: make build
+
+      - name: sha256
+        working-directory: plugin
+        run: make sha256

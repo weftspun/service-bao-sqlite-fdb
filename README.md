@@ -77,25 +77,25 @@ Prerequisites:
 - Go 1.27+
 - libsqlite3 development headers (`libsqlite3-dev` on Debian)
 - FoundationDB C client libraries (`foundationdb-clients` — the same package `service-openbao`'s Dockerfile.fdb installs)
-- `vendor/store/` populated (see Manifest wiring)
+- `thirdparty/store/` populated (see Manifest wiring)
 
-    scripts/link-vendor.sh   # local dev: symlink vendor/store/ from 6-datasource/store
+    scripts/link-thirdparty.sh   # local dev: symlink thirdparty/store/ from 6-datasource/store
     make build               # produces ./bao-plugin-sqlite-fdb
     make sha256              # sha256 for `bao plugin register`
     make test                # unit tests, plain SQLite only
 
 ## Manifest wiring
 
-The plugin sources fabric-store's `fdb_vfs.c` and `fdb_keys.h` through the goal manifest's linkfile mechanism, so a workspace checkout via `repo sync` populates `vendor/store/`:
+The plugin sources fabric-store's `fdb_vfs.c` and `fdb_keys.h` through the goal manifest's linkfile mechanism, so a workspace checkout via `repo sync` populates `thirdparty/store/`:
 
     <project name="datasource-store" path="6-datasource/store" ...>
       <linkfile src="fdb_vfs.c"
-                dest="7-service/service-bao-sqlite-fdb/vendor/store/fdb_vfs.c" />
+                dest="7-service/service-bao-sqlite-fdb/thirdparty/store/fdb_vfs.c" />
       <linkfile src="fdb_keys.h"
-                dest="7-service/service-bao-sqlite-fdb/vendor/store/fdb_keys.h" />
+                dest="7-service/service-bao-sqlite-fdb/thirdparty/store/fdb_keys.h" />
     </project>
 
-Two files, two names, no drift — the same pattern this workspace uses for `CLAUDE.md` and `CITATION.cff` at the root. `scripts/link-vendor.sh` is the local-dev fallback for a checkout that does not have the manifest updates yet.
+Two files, two names, no drift — the same pattern this workspace uses for `CLAUDE.md` and `CITATION.cff` at the root. `scripts/link-thirdparty.sh` is the local-dev fallback for a checkout that does not have the manifest updates yet. The directory is `thirdparty/` rather than `vendor/` because Go treats a top-level `vendor/` as its own vendored-dependencies dir.
 
 ## Registering with OpenBao
 

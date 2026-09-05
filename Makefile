@@ -5,11 +5,11 @@ SHASUM := $(shell command -v sha256sum >/dev/null 2>&1 && echo sha256sum || echo
 #   - Go 1.27+
 #   - libsqlite3 development headers (Debian: libsqlite3-dev)
 #   - FoundationDB C client libraries (foundationdb-clients)
-#   - vendor/store populated (scripts/link-vendor.sh or manifest linkfile)
+#   - thirdparty/store populated (scripts/link-thirdparty.sh or manifest linkfile)
 
-.PHONY: build sha256 test vet tidy clean vendor
+.PHONY: build sha256 test vet tidy clean thirdparty
 
-build: vendor
+build: thirdparty
 	CGO_ENABLED=1 go build -tags libsqlite3 -trimpath -o $(PLUGIN) .
 
 sha256: build
@@ -27,8 +27,8 @@ vet:
 tidy:
 	go mod tidy
 
-vendor:
-	@[ -f vendor/store/fdb_vfs.c ] || (echo "vendor/store/ not populated; run scripts/link-vendor.sh"; exit 1)
+thirdparty:
+	@[ -f thirdparty/store/fdb_vfs.c ] || (echo "thirdparty/store/ not populated; run scripts/link-thirdparty.sh"; exit 1)
 
 clean:
 	rm -f $(PLUGIN)

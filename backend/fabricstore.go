@@ -1,6 +1,7 @@
-// The cgo bridge to fabric-store's fdb_vfs.c. Requires the vendor/store
-// directory to hold fabric-store's fdb_vfs.c and fdb_keys.h (populated
-// by the goal manifest's linkfile, or by scripts/link-vendor.sh in dev).
+// The cgo bridge to fabric-store's fdb_vfs.c. Requires the
+// thirdparty/store directory to hold fabric-store's fdb_vfs.c and
+// fdb_keys.h (populated by the goal manifest's linkfile, or by
+// scripts/link-thirdparty.sh in dev).
 //
 // Fabric-store's exported ABI, per its fdb_vfs.c:
 //
@@ -18,10 +19,12 @@ package backend
 // foundationdb/fdb_c.h + target_compile_definitions FDB_API_VERSION=730).
 // Debian install path is /usr/include/foundationdb — override with
 // CGO_CFLAGS on other systems.
-#cgo CFLAGS: -I${SRCDIR}/../vendor/store -I/usr/include/foundationdb
+#cgo CFLAGS: -I${SRCDIR}/../thirdparty/store -I/usr/include/foundationdb
 #cgo CFLAGS: -DFDB_API_VERSION=730 -D_POSIX_C_SOURCE=200809L -Wno-unused-parameter
 #cgo pkg-config: sqlite3
 #cgo LDFLAGS: -lfdb_c -lpthread
+
+#include <stdlib.h>  // free()
 
 extern int  weft_fdb_start(const char *cluster_file);
 extern void weft_fdb_stop(void);
