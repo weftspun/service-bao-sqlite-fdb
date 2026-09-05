@@ -24,6 +24,8 @@ package backend
 #cgo pkg-config: sqlite3
 #cgo LDFLAGS: -lfdb_c -lpthread
 
+#include <stdlib.h>  // free()
+
 extern int  weft_fdb_start(const char *cluster_file);
 extern void weft_fdb_stop(void);
 extern int  weft_vfs_register(int make_default);
