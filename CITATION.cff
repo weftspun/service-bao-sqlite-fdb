@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "service-bao-sqlite-fdb"
+abstract: "OpenBao secrets engine that exposes fabric-store SQLite databases through Bao's KV read interface via a precanned SQL catalog."
+authors:
+  - family-names: "Lee"
+    given-names: "K. S. Ernest (iFire)"
+    email: "ernest.lee@chibifire.com"
+license:
+  - Apache-2.0
+  - MIT
+repository-code: "https://github.com/weftspun/service-bao-sqlite-fdb"
+date-released: 2026-09-04

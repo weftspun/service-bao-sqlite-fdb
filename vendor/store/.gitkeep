@@ -1,0 +1,4 @@
+# Fabric-store's fdb_vfs.c and fdb_keys.h land here at build time — from the
+# goal manifest's linkfile in production, or from scripts/link-vendor.sh in
+# local development. This directory is otherwise empty and its contents are
+# not tracked.

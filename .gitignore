@@ -1,0 +1,9 @@
+/bao-plugin-sqlite-fdb
+*.test
+/coverage.out
+/dist/
+
+# Populated by the goal manifest linkfile (or scripts/link-vendor.sh
+# locally). Owned by 6-datasource/store, not tracked here.
+/vendor/store/fdb_vfs.c
+/vendor/store/fdb_keys.h
