@@ -3,7 +3,7 @@
 /coverage.out
 /dist/
 
-# Populated by the goal manifest linkfile (or scripts/link-vendor.sh
+# Populated by the goal manifest linkfile (or scripts/link-thirdparty.sh
 # locally). Owned by 6-datasource/store, not tracked here.
-/vendor/store/fdb_vfs.c
-/vendor/store/fdb_keys.h
+/thirdparty/store/fdb_vfs.c
+/thirdparty/store/fdb_keys.h

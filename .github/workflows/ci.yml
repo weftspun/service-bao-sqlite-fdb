@@ -25,12 +25,12 @@ jobs:
           repository: weftspun/datasource-store
           path: store
 
-      - name: Populate vendor/store
+      - name: Populate thirdparty/store
         run: |
-          mkdir -p plugin/vendor/store
-          ln -sfn "$PWD/store/fdb_vfs.c" plugin/vendor/store/fdb_vfs.c
-          ln -sfn "$PWD/store/fdb_keys.h" plugin/vendor/store/fdb_keys.h
-          ls -la plugin/vendor/store
+          mkdir -p plugin/thirdparty/store
+          ln -sfn "$PWD/store/fdb_vfs.c" plugin/thirdparty/store/fdb_vfs.c
+          ln -sfn "$PWD/store/fdb_keys.h" plugin/thirdparty/store/fdb_keys.h
+          ls -la plugin/thirdparty/store/
 
       - name: Install libsqlite3 and pkg-config
         run: |
